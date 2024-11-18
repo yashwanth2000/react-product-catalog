@@ -7,7 +7,6 @@ export const fetchProducts = async () => {
     if (!response) throw new Error("Failed to fetch Products");
 
     const data = await response.json();
-    console.log(data);
 
     return data.products || [];
   } catch (error) {

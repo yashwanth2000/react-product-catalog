@@ -43,5 +43,6 @@ npm run dev
 - **Styling:** [Tailwind CSS](https://tailwindcss.com)
 - **Routing:** [React Router DOM](https://reactrouter.com)
 - **Icons:** [Lucide-react](https://lucide.dev)
-
-
+- **Type Checking:** [PropTypes](https://www.npmjs.com/package/prop-types)
+- **Toast Notifications:** [React Hot Toast](https://react-hot-toast.com)
+- **Skeleton Loader:** [React Skeleton Loader](https://www.npmjs.com/package/react-loading-skeleton)
