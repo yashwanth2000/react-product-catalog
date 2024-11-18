@@ -11,7 +11,7 @@ Before getting started, ensure you have **Node.js** and **npm** installed on you
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yashwanth2000/react-product-catalog.git
+https://github.com/yashwanth2000/react-product-catalog.git
 ```
 
 ### 2. Navigate to the Project Directory
