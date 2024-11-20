@@ -3,14 +3,29 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import PropTypes from "prop-types";
 import { useState } from "react";
+import { useCart } from "../../context/CartContext";
 
 const ProductCard = ({ product }) => {
-  const [isWished, setIsWished] = useState(false); 
-  const navigate = useNavigate(); 
+  const [isWished, setIsWished] = useState(false);
+  const navigate = useNavigate();
+  const { dispatch } = useCart();
+
+  const addToCart = (e) => {
+    e.preventDefault();
+    dispatch({ type: "ADD_TO_CART", payload: product });
+    toast.success("Added to cart!", {
+      duration: 2000,
+      position: "bottom-right",
+      style: {
+        background: "#10B981",
+        color: "#fff",
+      },
+    });
+  };
 
   const toggleWishlist = (e) => {
     e.preventDefault();
-    setIsWished((prev) => !prev); 
+    setIsWished((prev) => !prev);
     toast.success(isWished ? "Removed from wishlist" : "Added to wishlist", {
       duration: 2000,
       position: "bottom-right",
@@ -33,6 +48,7 @@ const ProductCard = ({ product }) => {
           <ul className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex space-x-3">
             <li>
               <button
+                onClick={addToCart}
                 className="w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center hover:text-red-500 hover:shadow-lg transition-shadow duration-300"
               >
                 <ShoppingCart className="w-6 h-6" />
