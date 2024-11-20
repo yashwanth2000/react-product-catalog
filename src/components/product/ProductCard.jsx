@@ -1,4 +1,4 @@
-import { ShoppingCart, Heart } from "lucide-react";
+import { ShoppingCart, Heart, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import PropTypes from "prop-types";
@@ -37,48 +37,65 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3">
-      <div className="bg-gradient-to-r from-gray-100 via-white to-gray-100 shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-xl overflow-hidden">
-        <div className="relative group h-72">
-          <img
-            src={product.thumbnail}
-            alt={product.title}
-            className="w-full h-full object-cover rounded-t-xl transform group-hover:scale-105 transition-transform duration-300"
-          />
-          <ul className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex space-x-3">
-            <li>
+    <div className="h-full w-full">
+      <div className="h-full flex flex-col bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+        <div className="relative w-full pt-[75%]">
+          <div className="absolute inset-0">
+            <img
+              src={product.thumbnail}
+              alt={product.title}
+              className="w-full h-full object-cover rounded-t-xl"
+            />
+            <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
+
+            <div className="absolute bottom-4 left-4 space-x-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
               <button
                 onClick={addToCart}
-                className="w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center hover:text-red-500 hover:shadow-lg transition-shadow duration-300"
+                className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-md hover:bg-blue-50 transition-colors duration-300"
               >
-                <ShoppingCart className="w-6 h-6" />
+                <ShoppingCart className="w-5 h-5" />
               </button>
-            </li>
-            <li>
               <button
                 onClick={toggleWishlist}
-                className="w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center hover:text-red-500 hover:shadow-lg transition-shadow duration-300"
+                className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-md hover:bg-red-50 transition-colors duration-300"
               >
-                <Heart className="w-6 h-6" color={isWished ? "red" : "gray"} />
+                <Heart
+                  className="w-5 h-5"
+                  color={isWished ? "red" : "black"}
+                  fill={isWished ? "red" : "none"}
+                />
               </button>
-            </li>
-          </ul>
-        </div>
-        <div className="p-5">
-          <div className="flex justify-between items-center">
-            <div>
-              <h3 className="text-lg font-semibold text-gray-800">
-                {product.title}
-              </h3>
-              <div className="flex items-center space-x-3 mt-2">
-                <span className="text-xl font-bold text-red-500">
-                  {`₹ ${product.price}`}
-                </span>
-              </div>
             </div>
+          </div>
+        </div>
+
+        <div className="flex-1 p-4 flex flex-col">
+          {/* Product Info */}
+          <div className="flex-1">
+            <h3 className="text-lg font-semibold text-gray-800 line-clamp-2 mb-1">
+              {product.title}
+            </h3>
+            <p className="text-sm text-gray-500 mb-2">{product.brand}</p>
+
+            {/* Rating */}
+            <div className="flex items-center gap-1 mb-2">
+              <Star className="w-4 h-4 fill-yellow-400 stroke-yellow-400" />
+              <span className="text-sm font-medium">
+                {product.rating.toFixed(1)}
+              </span>
+            </div>
+
+            {/* Price */}
+            <div className="text-xl font-bold text-red-500">
+              ₹ {product.price}
+            </div>
+          </div>
+
+          {/* View Details Button */}
+          <div className="mt-4">
             <button
               onClick={() => navigate(`/product/${product.id}`)}
-              className="px-6 py-3 text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-blue-600 rounded-full shadow-md hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-300 transform hover:scale-105"
+              className="w-full py-2 px-4 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2"
             >
               View Details
             </button>
@@ -95,6 +112,8 @@ ProductCard.propTypes = {
     title: PropTypes.string.isRequired,
     thumbnail: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
+    rating: PropTypes.number.isRequired,
+    brand: PropTypes.string,
   }).isRequired,
 };
 

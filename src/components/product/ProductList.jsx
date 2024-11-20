@@ -2,8 +2,9 @@ import ProductCard from "./ProductCard";
 import PropTypes from "prop-types";
 
 const ProductList = ({ products }) => {
+  // console.log("Products in ProductList:", products);
 
-  if (products.length === 0) {
+  if (!products || products.length === 0) {
     return (
       <div className="text-center py-10">
         <p className="text-gray-500">
@@ -24,7 +25,7 @@ const ProductList = ({ products }) => {
 
 ProductList.propTypes = {
   products: PropTypes.array.isRequired,
-  loading: PropTypes.bool.isRequired,
+  loading: PropTypes.bool,
 };
 
 export default ProductList;

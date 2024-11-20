@@ -11,6 +11,7 @@ export const useProducts = () => {
     categories: [],
     priceRange: { min: 0, max: 1000 },
     sortBy: "default",
+    search: "",
   });
 
   useEffect(() => {
@@ -38,6 +39,13 @@ export const useProducts = () => {
   useEffect(() => {
     let result = [...products];
 
+    // Apply search filter
+    if (filters.search.trim()) {
+      result = result.filter((product) =>
+        product.title.toLowerCase().includes(filters.search.toLowerCase())
+      );
+    }
+
     // Apply category filter
     if (filters.categories.length > 0) {
       result = result.filter((product) =>
@@ -45,6 +53,7 @@ export const useProducts = () => {
       );
     }
 
+    // Apply price range filter
     result = result.filter(
       (product) =>
         product.price >= filters.priceRange.min &&

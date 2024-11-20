@@ -1,4 +1,3 @@
-// src/context/CartContext.js
 import { createContext, useContext, useReducer } from "react";
 import PropTypes from "prop-types";
 

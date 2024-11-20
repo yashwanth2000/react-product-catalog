@@ -13,20 +13,21 @@ const CategoryFilter = ({ categories, selectedCategories, onChange }) => {
   };
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow">
-      <h3 className="text-lg font-semibold mb-4">Categories</h3>
-      <div className="space-y-2">
+    <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+      <h3 className="text-lg font-semibold text-gray-800 mb-6">Categories</h3>
+      <div className="space-y-4">
         {categories.map((category) => (
-          <label key={category} className="flex items-center space-x-2">
+          <label
+            key={category}
+            className="flex items-center space-x-3 text-gray-700"
+          >
             <input
               type="checkbox"
               checked={selectedCategories.includes(category)}
               onChange={() => handleCategoryChange(category)}
-              className="rounded border-gray-300 text-red-500 focus:ring-red-500"
+              className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
             />
-            <span className="text-gray-700">
-              {capitalizeFirstLetter(category)}
-            </span>
+            <span className="text-lg">{capitalizeFirstLetter(category)}</span>
           </label>
         ))}
       </div>

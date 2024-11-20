@@ -9,13 +9,44 @@ function Home() {
   const { products, categories, loading, error, filters, updateFilters } =
     useProducts();
 
+  // console.log("Home component rendered with products:", products);
+
+  if (!loading && products.length === 0) {
+    return (
+      <div className="container mx-auto px-4 mt-8">
+        <div className="text-center py-10">
+          <p className="text-gray-500">
+            No products found matching your search.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   if (loading) {
     return (
       <div className="container mx-auto px-4 mt-8">
         <div className="flex flex-col md:flex-row gap-6">
           <div className="w-full md:w-64 space-y-6">
-            <Skeleton height={200} className="mb-4" />
-            <Skeleton height={150} />
+            <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+              <Skeleton width={200} height={24} className="mb-6" />
+              <div className="space-y-4">
+                <Skeleton width="80%" height={20} />
+                <Skeleton width="80%" height={20} />
+                <Skeleton width="80%" height={20} />
+                <Skeleton width="80%" height={20} />
+              </div>
+            </div>
+
+            <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+              <Skeleton width={100} height={24} className="mb-6" />
+              <div className="relative">
+                <Skeleton width="100%" height={48} />
+                <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                  <Skeleton circle width={16} height={16} />
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="w-full flex-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -58,7 +89,15 @@ function Home() {
 
         {/* Products */}
         <div className="w-full flex-1">
-          <ProductList products={products} />
+          {products.length === 0 ? (
+            <div className="text-center py-10">
+              <p className="text-gray-500">
+                No products found matching your criteria.
+              </p>
+            </div>
+          ) : (
+            <ProductList products={products} />
+          )}
         </div>
       </div>
     </div>

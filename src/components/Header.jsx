@@ -2,12 +2,18 @@ import { Link } from "react-router-dom";
 import { Search, ShoppingCart } from "lucide-react";
 import ShopEaseImg from "../assets/shopease.jpg";
 import { useCart } from "../context/CartContext";
+import { useProducts } from "../hooks/useProducts";
 
 function Header() {
   const { state, dispatch } = useCart();
+  const { updateFilters } = useProducts();
 
   const handleCartClick = () => {
     dispatch({ type: "TOGGLE_CART" });
+  };
+
+  const handleSearchChange = (event) => {
+    updateFilters({ search: event.target.value });
   };
 
   const itemCount = state.items.reduce(
@@ -30,25 +36,23 @@ function Header() {
         <div className="relative flex-grow mx-6 max-w-md">
           <input
             type="text"
+            onChange={handleSearchChange}
             placeholder="Search for products..."
-            className="w-80 py-2 pl-10 pr-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="w-full py-2 pl-10 pr-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500"
           />
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
         </div>
 
         <button
           onClick={handleCartClick}
-          className="flex items-center space-x-2 bg-red-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-red-600 transition"
+          className="relative p-2 hover:bg-gray-100 rounded-full transition-colors"
         >
-          <div className="relative">
-            <ShoppingCart className="w-5 h-5" />
-            {itemCount > 0 && (
-              <span className="absolute -top-2 -right-2 bg-white text-red-500 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
-                {itemCount}
-              </span>
-            )}
-          </div>
-          <span className="hidden sm:inline">Cart</span>
+          <ShoppingCart className="w-5 h-5" />
+          {itemCount > 0 && (
+            <span className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+              {itemCount}
+            </span>
+          )}
         </button>
       </div>
     </header>
