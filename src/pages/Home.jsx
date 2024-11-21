@@ -1,5 +1,6 @@
 import CategoryFilter from "../components/filter/CategoryFilter";
 import SortingFilter from "../components/filter/SortingFilter";
+import Header from "../components/Header";
 import ProductList from "../components/product/ProductList";
 import { useProducts } from "../hooks/useProducts";
 import Skeleton from "react-loading-skeleton";
@@ -9,17 +10,18 @@ function Home() {
   const { products, categories, loading, error, filters, updateFilters } =
     useProducts();
 
-  // console.log("Home component rendered with products:", products);
-
   if (!loading && products.length === 0) {
     return (
-      <div className="container mx-auto px-4 mt-8">
-        <div className="text-center py-10">
-          <p className="text-gray-500">
-            No products found matching your search.
-          </p>
+      <>
+        <Header updateFilters={updateFilters} />
+        <div className="container mx-auto px-4 mt-8">
+          <div className="text-center py-10">
+            <p className="text-gray-500">
+              No products found matching your search.
+            </p>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
@@ -72,35 +74,30 @@ function Home() {
   }
 
   return (
-    <div className="container mx-auto px-4 mt-8">
-      <div className="flex flex-col md:flex-row gap-6">
-        {/* Filters Sidebar */}
-        <div className="w-full md:w-64 space-y-6">
-          <CategoryFilter
-            categories={categories}
-            selectedCategories={filters.categories}
-            onChange={(categories) => updateFilters({ categories })}
-          />
-          <SortingFilter
-            value={filters.sortBy}
-            onChange={(sortBy) => updateFilters({ sortBy })}
-          />
-        </div>
+    <>
+      <Header updateFilters={updateFilters} />
+      <div className="container mx-auto px-4">
+        <div className="flex flex-col md:flex-row gap-6">
+          {/* Filters Sidebar */}
+          <div className="w-full md:w-64 space-y-6">
+            <CategoryFilter
+              categories={categories}
+              selectedCategories={filters.categories}
+              onChange={(categories) => updateFilters({ categories })}
+            />
+            <SortingFilter
+              value={filters.sortBy}
+              onChange={(sortBy) => updateFilters({ sortBy })}
+            />
+          </div>
 
-        {/* Products */}
-        <div className="w-full flex-1">
-          {products.length === 0 ? (
-            <div className="text-center py-10">
-              <p className="text-gray-500">
-                No products found matching your criteria.
-              </p>
-            </div>
-          ) : (
+          {/* Products */}
+          <div className="w-full flex-1">
             <ProductList products={products} />
-          )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

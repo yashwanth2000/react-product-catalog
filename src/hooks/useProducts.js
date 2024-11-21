@@ -9,7 +9,6 @@ export const useProducts = () => {
   const [error, setError] = useState(null);
   const [filters, setFilters] = useState({
     categories: [],
-    priceRange: { min: 0, max: 1000 },
     sortBy: "default",
     search: "",
   });
@@ -41,8 +40,9 @@ export const useProducts = () => {
 
     // Apply search filter
     if (filters.search.trim()) {
+      let tempSearch = filters.search.toLowerCase();
       result = result.filter((product) =>
-        product.title.toLowerCase().includes(filters.search.toLowerCase())
+        product.title.toLowerCase().includes(tempSearch)
       );
     }
 
@@ -52,13 +52,6 @@ export const useProducts = () => {
         filters.categories.includes(product.category)
       );
     }
-
-    // Apply price range filter
-    result = result.filter(
-      (product) =>
-        product.price >= filters.priceRange.min &&
-        product.price <= filters.priceRange.max
-    );
 
     // Apply sorting
     switch (filters.sortBy) {

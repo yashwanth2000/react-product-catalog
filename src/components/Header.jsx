@@ -2,11 +2,10 @@ import { Link } from "react-router-dom";
 import { Search, ShoppingCart } from "lucide-react";
 import ShopEaseImg from "../assets/shopease.jpg";
 import { useCart } from "../context/CartContext";
-import { useProducts } from "../hooks/useProducts";
+import PropTypes from "prop-types";
 
-function Header() {
+function Header({ updateFilters }) {
   const { state, dispatch } = useCart();
-  const { updateFilters } = useProducts();
 
   const handleCartClick = () => {
     dispatch({ type: "TOGGLE_CART" });
@@ -22,7 +21,7 @@ function Header() {
   );
 
   return (
-    <header className="bg-gradient-to-r from-gray-100 via-white to-gray-100 shadow-md py-4 sticky top-0 z-50">
+    <header className="bg-gradient-to-r from-gray-100 via-white to-gray-100 shadow-md py-4 mb-8 sticky top-0 z-50">
       <div className="container mx-auto px-4 flex justify-between items-center">
         <Link to="/" className="flex items-center space-x-3">
           <img
@@ -58,5 +57,9 @@ function Header() {
     </header>
   );
 }
+
+Header.propTypes = {
+  updateFilters: PropTypes.func.isRequired,
+};
 
 export default Header;

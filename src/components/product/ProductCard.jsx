@@ -38,7 +38,7 @@ const ProductCard = ({ product }) => {
 
   return (
     <div className="h-full w-full">
-      <div className="h-full flex flex-col bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+      <div className="h-full flex flex-col bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group">
         <div className="relative w-full pt-[75%]">
           <div className="absolute inset-0">
             <img
@@ -46,6 +46,7 @@ const ProductCard = ({ product }) => {
               alt={product.title}
               className="w-full h-full object-cover rounded-t-xl"
             />
+            {/* Overlay effect on image*/}
             <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
 
             <div className="absolute bottom-4 left-4 space-x-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
