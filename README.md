@@ -1,5 +1,3 @@
-Here’s an enhanced and more polished version of your markdown:
-
 # Installation Guide
 
 Before getting started, ensure you have **Node.js** and **npm** installed on your machine.
@@ -22,7 +20,7 @@ cd react-product-catalog
 
 ### 3. Install Dependencies
 
-Install all necessary dependencies for both the client and server:
+Install all necessary dependencies:
 
 ```bash
 npm install
@@ -30,7 +28,7 @@ npm install
 
 ### 4. Run the Application
 
-Start both the client and server simultaneously:
+Start both the project:
 
 ```bash
 npm run dev
