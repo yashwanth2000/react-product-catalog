@@ -1,26 +1,37 @@
-import { ShoppingCart, Heart, Star } from "lucide-react";
+import { Heart, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCart } from "../../context/CartContext";
 
 const ProductCard = ({ product }) => {
   const [isWished, setIsWished] = useState(false);
   const navigate = useNavigate();
-  const { dispatch } = useCart();
+  const { state, dispatch } = useCart();
+  const [isAddedToCart, setIsAddedToCart] = useState(false);
+
+  useEffect(() => {
+    const isProductInCart = state.items.some((item) => item.id === product.id);
+    setIsAddedToCart(isProductInCart);
+  }, [state, product.id]);
 
   const addToCart = (e) => {
-    e.preventDefault();
-    dispatch({ type: "ADD_TO_CART", payload: product });
-    toast.success("Added to cart!", {
-      duration: 2000,
-      position: "bottom-right",
-      style: {
-        background: "#10B981",
-        color: "#fff",
-      },
-    });
+    if (!isAddedToCart) {
+      e.preventDefault();
+      dispatch({ type: "ADD_TO_CART", payload: product });
+      toast.success("Added to cart!", {
+        duration: 2000,
+        position: "bottom-right",
+        style: {
+          background: "#10B981",
+          color: "#fff",
+        },
+      });
+      setIsAddedToCart(true);
+    } else {
+      dispatch({ type: "TOGGLE_CART" });
+    }
   };
 
   const toggleWishlist = (e) => {
@@ -50,12 +61,6 @@ const ProductCard = ({ product }) => {
             <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
 
             <div className="absolute bottom-4 left-4 space-x-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
-              <button
-                onClick={addToCart}
-                className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-md hover:bg-blue-50 transition-colors duration-300"
-              >
-                <ShoppingCart className="w-5 h-5" />
-              </button>
               <button
                 onClick={toggleWishlist}
                 className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-md hover:bg-red-50 transition-colors duration-300"
@@ -92,13 +97,23 @@ const ProductCard = ({ product }) => {
             </div>
           </div>
 
-          {/* View Details Button */}
-          <div className="mt-4">
+          <div className="flex justify-between mt-4">
             <button
               onClick={() => navigate(`/product/${product.id}`)}
-              className="w-full py-2 px-4 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2"
+              className="text-black text-lg font-semibold hover:text-blue-600 hover:underline hover:underline-offset-4 transition-colors duration-300"
             >
               View Details
+            </button>
+
+            <button
+              onClick={addToCart}
+              className={`${
+                isAddedToCart
+                  ? "bg-blue-600 text-white hover:bg-blue-700 hover:scale-105"
+                  : "bg-green-600 text-white hover:bg-green-700 hover:scale-105 py-2 px-4"
+              } py-2 px-4 flex items-center justify-center space-x-2 rounded-md transition-all duration-300 ease-in-out shadow-md hover:shadow-lg`}
+            >
+              <span>{isAddedToCart ? "Added to Cart" : "Add to Cart"}</span>
             </button>
           </div>
         </div>

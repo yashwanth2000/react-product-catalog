@@ -1,14 +1,16 @@
-import CategoryFilter from "../components/filter/CategoryFilter";
-import SortingFilter from "../components/filter/SortingFilter";
+import { useState } from "react";
+import FilterPanel from "../components/filter/FilterPanel";
 import Header from "../components/Header";
 import ProductList from "../components/product/ProductList";
 import { useProducts } from "../hooks/useProducts";
 import Skeleton from "react-loading-skeleton";
+import { X } from "lucide-react";
 import "react-loading-skeleton/dist/skeleton.css";
 
 function Home() {
   const { products, categories, loading, error, filters, updateFilters } =
     useProducts();
+  const [showFilters, setShowFilters] = useState(false);
 
   if (!loading && products.length === 0) {
     return (
@@ -38,9 +40,7 @@ function Home() {
                 <Skeleton width="80%" height={20} />
                 <Skeleton width="80%" height={20} />
               </div>
-            </div>
 
-            <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
               <Skeleton width={100} height={24} className="mb-6" />
               <div className="relative">
                 <Skeleton width="100%" height={48} />
@@ -78,20 +78,52 @@ function Home() {
       <Header updateFilters={updateFilters} />
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row gap-6">
-          {/* Filters Sidebar */}
-          <div className="w-full md:w-64 space-y-6">
-            <CategoryFilter
+          {/* Filters Sidebar for Desktop */}
+          <div className="hidden md:block md:w-64">
+            <FilterPanel
               categories={categories}
               selectedCategories={filters.categories}
-              onChange={(categories) => updateFilters({ categories })}
-            />
-            <SortingFilter
-              value={filters.sortBy}
-              onChange={(sortBy) => updateFilters({ sortBy })}
+              onCategoryChange={(categories) => updateFilters({ categories })}
+              sortValue={filters.sortBy}
+              onSortChange={(sortBy) => updateFilters({ sortBy })}
             />
           </div>
 
-          {/* Products */}
+         {/* Mobile Filter Button */}
+<div className="md:hidden">
+  <button
+    onClick={() => setShowFilters(true)}
+    className="bg-blue-500 text-white px-4 py-2 rounded-md"
+  >
+    Filters
+  </button>
+  <div
+    className={`fixed inset-0 bg-white z-50 transform ${
+      showFilters ? "translate-x-0" : "translate-x-full"
+    } transition-transform duration-300`}
+  >
+    <div className="relative">
+      {/* Add a margin to the right so the close icon isn't too close to the edge */}
+      <button
+        onClick={() => setShowFilters(false)}
+        className="absolute top-4 right-4 p-2 text-gray-700 hover:text-red-500 hover:bg-gray-100 rounded-full"
+      >
+        <X className="h-6 w-6" />
+      </button>
+      {/* Ensure the filter panel has enough padding from the top */}
+      <FilterPanel
+        categories={categories}
+        selectedCategories={filters.categories}
+        onCategoryChange={(categories) => updateFilters({ categories })}
+        sortValue={filters.sortBy}
+        onSortChange={(sortBy) => updateFilters({ sortBy })}
+      />
+    </div>
+  </div>
+</div>
+
+
+          {/* Products Section */}
           <div className="w-full flex-1">
             <ProductList products={products} />
           </div>

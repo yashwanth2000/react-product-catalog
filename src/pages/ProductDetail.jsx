@@ -16,11 +16,12 @@ import "react-loading-skeleton/dist/skeleton.css";
 const ProductDetailsPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { dispatch } = useCart();
+  const { state, dispatch } = useCart();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedImage, setSelectedImage] = useState(0);
+  const [isAddedToCart, setIsAddedToCart] = useState(false);
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -31,6 +32,11 @@ const ProductDetailsPage = () => {
           throw new Error("Product not found");
         }
         setProduct(foundProduct);
+
+        const isProductInCart = state.items.some(
+          (item) => item.id === foundProduct.id
+        );
+        setIsAddedToCart(isProductInCart);
       } catch (err) {
         console.error("Error loading product:", err);
         setError(err.message);
@@ -40,11 +46,16 @@ const ProductDetailsPage = () => {
     };
 
     loadProduct();
-  }, [id]);
+  }, [id, state.items]);
 
   const addToCart = () => {
-    dispatch({ type: "ADD_TO_CART", payload: product });
-    toast.success("Added to cart!");
+    if (!isAddedToCart) {
+      dispatch({ type: "ADD_TO_CART", payload: product });
+      toast.success("Added to cart!");
+      setIsAddedToCart(true);
+    } else {
+      dispatch({ type: "TOGGLE_CART" });
+    }
   };
 
   if (loading) {
@@ -222,10 +233,14 @@ const ProductDetailsPage = () => {
                 {isAvailable && (
                   <button
                     onClick={() => addToCart(product)}
-                    className="flex items-center gap-3 px-8 py-3 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 hover:shadow-lg"
+                    className={`flex items-center gap-3 px-8 py-3 rounded-xl shadow-md transition ${
+                      isAddedToCart
+                        ? "bg-green-600 text-white hover:bg-green-700"
+                        : "bg-blue-600 text-white hover:bg-blue-700"
+                    }`}
                   >
                     <ShoppingCart className="w-6 h-6" />
-                    Add to Cart
+                    {isAddedToCart ? "Added to Cart" : "Add to Cart"}
                   </button>
                 )}
               </div>
