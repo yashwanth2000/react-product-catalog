@@ -4,7 +4,7 @@ import Header from "../components/Header";
 import ProductList from "../components/product/ProductList";
 import { useProducts } from "../hooks/useProducts";
 import Skeleton from "react-loading-skeleton";
-import { X } from "lucide-react";
+import { FilterIcon, X } from "lucide-react";
 import "react-loading-skeleton/dist/skeleton.css";
 
 function Home() {
@@ -89,39 +89,39 @@ function Home() {
             />
           </div>
 
-         {/* Mobile Filter Button */}
-<div className="md:hidden">
-  <button
-    onClick={() => setShowFilters(true)}
-    className="bg-blue-500 text-white px-4 py-2 rounded-md"
-  >
-    Filters
-  </button>
-  <div
-    className={`fixed inset-0 bg-white z-50 transform ${
-      showFilters ? "translate-x-0" : "translate-x-full"
-    } transition-transform duration-300`}
-  >
-    <div className="relative">
-      {/* Add a margin to the right so the close icon isn't too close to the edge */}
-      <button
-        onClick={() => setShowFilters(false)}
-        className="absolute top-4 right-4 p-2 text-gray-700 hover:text-red-500 hover:bg-gray-100 rounded-full"
-      >
-        <X className="h-6 w-6" />
-      </button>
-      {/* Ensure the filter panel has enough padding from the top */}
-      <FilterPanel
-        categories={categories}
-        selectedCategories={filters.categories}
-        onCategoryChange={(categories) => updateFilters({ categories })}
-        sortValue={filters.sortBy}
-        onSortChange={(sortBy) => updateFilters({ sortBy })}
-      />
-    </div>
-  </div>
-</div>
-
+          {/* Mobile Filter Button */}
+          <div className="md:hidden flex items-center">
+            <button
+              onClick={() => setShowFilters(true)}
+              className="bg-blue-500 text-white px-5 py-2 rounded-md flex items-center space-x-2"
+            >
+              <FilterIcon className="h-6 w-6" />
+              <span>Filters</span>
+            </button>
+            <div
+              className={`fixed inset-0 bg-white z-50 transform ${
+                showFilters ? "translate-x-0" : "translate-x-full"
+              } transition-transform duration-300`}
+            >
+              <div className="relative">
+                <button
+                  onClick={() => setShowFilters(false)}
+                  className="absolute top-4 right-4 p-2 text-gray-700 hover:text-red-500 hover:bg-gray-100 rounded-full"
+                >
+                  <X className="h-6 w-6" />
+                </button>
+                <FilterPanel
+                  categories={categories}
+                  selectedCategories={filters.categories}
+                  onCategoryChange={(categories) =>
+                    updateFilters({ categories })
+                  }
+                  sortValue={filters.sortBy}
+                  onSortChange={(sortBy) => updateFilters({ sortBy })}
+                />
+              </div>
+            </div>
+          </div>
 
           {/* Products Section */}
           <div className="w-full flex-1">

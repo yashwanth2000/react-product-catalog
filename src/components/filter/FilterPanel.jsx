@@ -5,6 +5,7 @@ import { useState } from "react";
 const capitalizeFirstLetter = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
+
 const FilterPanel = ({
   categories,
   selectedCategories,
@@ -24,6 +25,10 @@ const FilterPanel = ({
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-lg border border-gray-300">
+      <div className="flex justify-between items-center border-b pb-2 mb-4">
+        <h2 className="text-lg font-semibold text-gray-800">Filters</h2>
+      </div>
+
       <div className="space-y-5">
         {/* Categories Accordion */}
         <div>
@@ -43,7 +48,7 @@ const FilterPanel = ({
               {categories.map((category) => (
                 <label
                   key={category}
-                  className="flex items-center space-x-3 text-gray-70"
+                  className="flex items-center space-x-3 text-gray-700"
                 >
                   <input
                     type="checkbox"
